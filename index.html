@@ -496,9 +496,9 @@ function flowImg(name){if(S.busy)return;if(name==='지금 얼굴'){if(S.fq===1){
  if(again){S.ph=null;return say(['🥹'])}
  const sp=pspec()[name];if(sp){S.ph=null;return say(sp)}
  if(G2.includes(n)){if(S.g2n){S.ph=null;return say(['나 말구 형 사진 보내줘'])}S.g2n=1}
- if(G1.includes(n)){S.ph='who';say(['우와 누구야?'])}
+ if(G1.includes(n)){if(S.g1d)return say(['🥹']);S.g1d=1;S.ph='who';say(['우와 누구야?'])}/* 끝난 사진 시나리오는 다시 시작하지 않음 */
  else if(G2.includes(n)){S.ph=null;const ask=!S.fq;if(ask)S.fq=1;say(['뭔가 부끄럽네ㅎㅎ...','@img왕필 셀카',...(ask?['나두 여보 얼굴 볼래','지금 얼굴']:[])],()=>{if(ask)S.nfOK=1;if(!S.sfs){S.sfs=1;setTimeout(saveSelfie,30000)}})}
- else if(G3.includes(n)){S.ph='c1';say(['힘내라 힘! 영차 영차'])}}
+ else if(G3.includes(n)){if(S.g3d)return say(['🥹']);S.g3d=1;S.ph='c1';say(['힘내라 힘! 영차 영차'])}}
 function saveSelfie(){const n=kst();D.PHOTOS.push({src:SELFIE,alt:'왕필 셀카',date:`${n.getFullYear()}년 ${n.getMonth()+1}월 ${n.getDate()}일`,name:'왕필 셀카'});if(S.app==='photos'&&S.photo===null)render()}
 function toRamen(){S.us=[];S.items=RAMEN.map(x=>({...x}));S.store='영원라멘 강동점';S.ramen=1;if(S.app==='baemin')render()}
 function rb(){if(S.app==='baemin')render()}
@@ -548,7 +548,7 @@ shoot(){const f=$('#camf');f.classList.remove('go');void f.offsetWidth;f.classLi
 nfp(v){S.nf=v;render()},nfb(){S.nf=null;render()},nfplay(){toast('지금은 재생할 수 없어요')},
 wtr(){S.wt='rated';render()},wtm(v){S.wt=v;render()},wtb(){S.wt=S.wt==='rated'?'my':'rated';render()},wtab(v){if(v!=4)toast('준비 중인 화면이에요');else{S.wt='my';render()}},wtx(){toast('준비 중인 화면이에요')},
 wfo(){S.wf=1;S.ws=5;render()},wfx(){S.wf=0;render()},wfs(v){S.ws=+v;document.querySelectorAll('#wfst .s').forEach(b=>b.classList.toggle('f',+b.dataset.v<=S.ws))},
-wfsave(){const dv=$('#wfd').value||TODAY,[y,m,d]=dv.split('-').map(Number),t=$('#wft').value.trim();WRX.push({d:`${y}. ${m}. ${d}.`,k:dv,s:S.ws,t,m:S.wt});LS('wt-rec',JSON.stringify(WRX));S.wf=0;render();toast('감상 기록을 저장했어요');if(S.cq!==1&&S.cq!==2){S.cqWant=1;S.cqAt=Date.now()}},
+wfsave(){const dv=$('#wfd').value||TODAY,[y,m,d]=dv.split('-').map(Number),t=$('#wft').value.trim();WRX.push({d:`${y}. ${m}. ${d}.`,k:dv,s:S.ws,t,m:S.wt});LS('wt-rec',JSON.stringify(WRX));S.wf=0;render();toast('감상 기록을 저장했어요');if(!S.cq&&!S.cqWant){S.cqWant=1;S.cqAt=Date.now()}}/* 극장 데이트 권유는 한 번만 */,
 pview(v){const g=$('#pgr');if(g)S.psc=g.scrollTop;S.photo=+v;render();prank()},pback(){S.photo=null;render()},pfav(){const i=S.photo;S.fav[i]=!S.fav[i];render();if(S.fav[i]){toast('즐겨찾기에 추가했어요');if(HEARTN.includes(D.PHOTOS[i].name))prankGo()}},pnav(v){const O=pord(),k=O.indexOf(S.photo)+ +v;if(O[k]===undefined)return;S.photo=O[k];render();prank()},
 note(v){S.note=+v;render()},chk(v){const c=CHK(),i=+v,k=c.indexOf(i);if(k>=0)c.splice(k,1);else c.push(i);LS('memo-chk',JSON.stringify(c));const b=document.querySelector(`.ckl [data-v="${i}"]`);if(b)b.classList.toggle('on',k<0)},ndel(){S.nd=1;S.note=null;render()},ndback(){S.nd=0;S.note=null;render()},nback(){S.note=null;render()},
 wp(k){$('#f-'+k).click()},wpreset(){['lock','home'].forEach(k=>{LS('wp-'+k,'');W[k]=D.WALL[k]});applyWP();render();toast('원래 배경으로 돌아갔어요')}};
